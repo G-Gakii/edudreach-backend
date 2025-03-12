@@ -9,13 +9,13 @@ let mailTransporter = nodemailer.createTransport({
 });
 export const sendMail = async (
   email: string,
-  subject: string,
-  body: string
+
+  otp: string
 ) => {
   await mailTransporter.sendMail({
     from: process.env.EMAIL,
     to: email,
-    subject: subject,
-    html: body,
+    subject: "Verification code",
+    html: `<p>Your email verification code is ${otp}</p>`,
   });
 };

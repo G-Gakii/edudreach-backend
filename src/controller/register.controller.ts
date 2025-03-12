@@ -6,6 +6,9 @@ import generateAccessToken, {
   generaterefreshToken,
 } from "../utils/generateToken.utils";
 import { Error } from "mongoose";
+import generateOtp from "../utils/generateOtp.utils";
+import { sendMail } from "../utils/sendEmail.utils";
+import Otp from "../model/otp.model";
 
 const registerUser = async (req: Request, res: Response) => {
   try {
@@ -25,6 +28,14 @@ const registerUser = async (req: Request, res: Response) => {
     });
     const savedUser = await newUser.save();
 
+    const otp = generateOtp();
+    const userOtp = new Otp({
+      email,
+      otp,
+    });
+    await userOtp.save();
+
+    sendMail(email, otp);
     const accessToken = await generateAccessToken(savedUser.id);
     const refreshToken = await generaterefreshToken(savedUser.id);
     res.status(201).json({
