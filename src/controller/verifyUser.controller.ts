@@ -1,16 +1,18 @@
 import { Request, Response } from "express";
 import User from "../model/user.model";
 import Otp from "../model/otp.model";
-
+import { Iuser } from "../interface/user.interface";
 const verifyUser = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
     const { otp } = req.body;
-    const user = await User.findById(id);
+    const user = req.user as Iuser;
+    console.log(user);
+
     if (!user) {
       res.status(404).json({ message: "user does not exist" });
       return;
     }
+
     const userEmail = user.email;
     const userInfo = await Otp.findOne({ email: userEmail });
     if (!userInfo) {

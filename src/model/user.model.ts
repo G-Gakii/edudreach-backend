@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { userInfo } from "os";
+import { Iuser } from "../interface/user.interface";
 
 const UserSchema = new mongoose.Schema(
   {
@@ -32,6 +33,6 @@ const UserSchema = new mongoose.Schema(
   }
 );
 
-const User = mongoose.model("user", UserSchema);
+const User = mongoose.model<Iuser>("user", UserSchema);
 
 export default User;
